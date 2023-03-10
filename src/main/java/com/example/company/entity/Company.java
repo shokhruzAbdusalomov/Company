@@ -17,7 +17,6 @@ public class Company {
     private Long id;
     private String corpName;
     private String dirName;
-
     @OneToOne
     private Address address;
 }

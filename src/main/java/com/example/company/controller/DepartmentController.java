@@ -31,7 +31,7 @@ public class DepartmentController {
     }
 
     @PostMapping("/addDepartment")
-    public String addCompany(@ModelAttribute DepartmentDto departmentDto, Model model) {
+    public String addCompany(@RequestBody DepartmentDto departmentDto) {
         Optional<Company> byId = companyRepo.findById(departmentDto.getCompanyId());
         if (byId.isPresent()){
             Company company1 = byId.get();
@@ -50,7 +50,7 @@ public class DepartmentController {
         departmentRepo.deleteById(id);
         return "Deleted!";
     }
-    @PutMapping("editt/{id}")
+    @PutMapping("department/edit/{id}")
     public String update(@RequestBody Department department, @PathVariable Long id) {
         Optional<Department> byId = departmentRepo.findById(id);
         if (byId.isPresent()) {

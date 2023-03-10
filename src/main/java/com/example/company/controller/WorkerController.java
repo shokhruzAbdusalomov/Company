@@ -31,22 +31,21 @@ public class WorkerController {
     private DepartmentRepo departmentRepo;
 
     @GetMapping("/worker")
-    public List<Worker> getAllWorker(){
+    public List<Worker> getAllWorker() {
         return workerRepo.findAll();
 
     }
 
-    @PostMapping("/addDepartment")
-    public String addCompany(@ModelAttribute WorkerDto workerDto, Model model) {
+    @PostMapping("/addWorker")
+    public String addWorker(@RequestBody WorkerDto workerDto) {
         Optional<Department> byId = departmentRepo.findById(workerDto.getDepartmentId());
         Optional<Address> byId1 = addressRepo.findById(workerDto.getDepartmentId());
-        if (byId.isPresent() || byId1.isPresent()){
+        if (byId.isPresent() && byId1.isPresent()) {
             Department department1 = byId.get();
             Address address1 = byId1.get();
-            Worker worker1 = new Worker(null,workerDto.getName(),workerDto.getPhoneNumb(),address1,department1);
+            Worker worker1 = new Worker(null, workerDto.getName(), workerDto.getPhoneNumb(), address1, department1);
             workerRepo.save(worker1);
-        }
-        else{
+        } else {
             return "address not found";
         }
         return "Saved!";
@@ -59,7 +58,7 @@ public class WorkerController {
         return "Deleted!";
     }
 
-    @PutMapping("editt/{id}")
+    @PutMapping("worker/edit/{id}")
     public String update(@RequestBody Worker worker, @PathVariable Long id) {
         Optional<Worker> byId = workerRepo.findById(id);
         if (byId.isPresent()) {

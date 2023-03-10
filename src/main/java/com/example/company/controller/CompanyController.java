@@ -27,23 +27,22 @@ public class CompanyController {
 
 
     @GetMapping("/company")
-    public List<Company> getAllCompany(){
+    public List<Company> getAllCompany() {
         return companyRepo.findAll();
 
     }
 
     @PostMapping("/addCompany")
-    public String addCompany(@ModelAttribute CompanyDto companyDto, Model model) {
+    public String addCompany(@RequestBody CompanyDto companyDto) {
         Optional<Address> byId = addressRepo.findById(companyDto.getAddressId());
-        if (byId.isPresent()){
+        if (byId.isPresent()) {
             Address address1 = byId.get();
-            Company company1 = new Company(null,companyDto.getCorpName(),companyDto.getDirName(),address1);
+            Company company1 = new Company(null, companyDto.getCorpName(), companyDto.getDirName(), address1);
             companyRepo.save(company1);
+        } else {
+            return "address not found";
         }
-        else{
-return "address not found";
-        }
-return "Saved!";
+        return "Saved!";
 
     }
 
@@ -52,7 +51,8 @@ return "Saved!";
         companyRepo.deleteById(id);
         return "Deleted!";
     }
-    @PutMapping("editt/{id}")
+
+    @PutMapping("company/edit/{id}")
     public String update(@RequestBody Company company, @PathVariable Long id) {
         Optional<Company> byId = companyRepo.findById(id);
         if (byId.isPresent()) {

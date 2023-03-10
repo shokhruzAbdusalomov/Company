@@ -27,7 +27,7 @@ public class AddressController {
         addressRepo.save(address);
         return "Saved!";
     }
-    @PutMapping("editt/{id}")
+    @PutMapping("address/edit/{id}")
     public String update(@RequestBody Address address, @PathVariable Long id) {
         Optional<Address> byId = addressRepo.findById(id);
         if (byId.isPresent()) {
