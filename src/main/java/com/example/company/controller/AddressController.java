@@ -4,12 +4,10 @@ package com.example.company.controller;
 import com.example.company.entity.Address;
 import com.example.company.repository.AddressRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class AddressController {
@@ -28,6 +26,18 @@ public class AddressController {
     public String addAddress(@RequestBody Address address){
         addressRepo.save(address);
         return "Saved!";
+    }
+    @PutMapping("editt/{id}")
+    public String update(@RequestBody Address address, @PathVariable Long id) {
+        Optional<Address> byId = addressRepo.findById(id);
+        if (byId.isPresent()) {
+            Address editedAddress = byId.get();
+            editedAddress.setId(address.getId());
+            editedAddress.setStreet(address.getStreet());
+            editedAddress.setHomeNumb(address.getHomeNumb());
+            addressRepo.save(editedAddress);
+            return "success";
+        } else return "address by this id is not found";
     }
 
 
